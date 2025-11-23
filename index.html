@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão Medicina: Histo & Embrio Completa</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- TOP NAVIGATION BAR (Responsive) --- */
+        .top-nav {
+            background-color: var(--primary);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            justify-content: center;
+        }
+
+        .top-nav::-webkit-scrollbar { height: 4px; }
+        .top-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
+
+        .nav-container { display: flex; padding: 0 15px; }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ecf0f1;
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            flex: 0 0 auto;
+        }
+
+        .nav-btn:hover { background-color: rgba(255,255,255,0.1); }
+
+        .nav-btn.active {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .content-section.active { display: block; }
+
+        h1 { 
+            color: var(--primary); 
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .source-ref {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        h3 { color: var(--dark); margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;}
+
+        /* --- SUMMARY BOX --- */
+        .summary-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--success);
+        }
+        .summary-box ul { padding-left: 20px; }
+        .summary-box li { margin-bottom: 12px; line-height: 1.6; }
+        
+        strong { color: var(--primary); }
+
+        /* --- FLASHCARDS --- */
+        .flashcard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover { transform: translateY(-3px); }
+
+        .question {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+            color: #2c3e50;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .toggle-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: flex-start;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+        
+        @media (min-width: 600px) { .toggle-btn { width: auto; } }
+        .toggle-btn:hover { background-color: #2980b9; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav { justify-content: flex-start; padding: 15px 0; }
+            .nav-container { width: 100%; }
+            h1 { font-size: 1.5rem; }
+            .main-content { padding: 15px; }
+            .summary-box { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="showSection('sexual')">Diferenciação Sexual</button>
+            <button class="nav-btn" onclick="showSection('urinario')">Sistema Urinário</button>
+            <button class="nav-btn" onclick="showSection('masculino')">Reprodutor Masculino</button>
+            <button class="nav-btn" onclick="showSection('feminino')">Reprodutor Feminino</button>
+            <button class="nav-btn" onclick="showSection('adrenais')">Adrenais e Pâncreas</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+
+        <div id="sexual" class="content-section active">
+            <h1>Diferenciação Sexual</h1>
+            <div class="source-ref">Fonte: AULA 8.0 - Diferenciação sexual (1).pdf</div>
+            
+            <div class="summary-box">
+                <h3>Conceitos Fundamentais:</h3>
+                <ul>
+                    <li><strong>Cronologia:</strong> Gônadas indiferenciadas até a 6ª semana. A diferenciação testicular inicia na <strong>7ª semana</strong> (XY), enquanto a ovariana só é evidente na <strong>12ª semana</strong> (XX).</li>
+                    <li><strong>Gene SRY e Sox9:</strong> O gene SRY (braço curto do Y) é o "interruptor mestre". Ele ativa o gene <strong>Sox9</strong> (autossômico), que juntos induzem a diferenciação das células de Sertoli e a formação dos testículos.</li>
+                    <li><strong>Diferenciação Feminina:</strong> Na ausência de SRY, genes como <strong>Wnt4 e Foxl2</strong> bloqueiam o desenvolvimento testicular e promovem o ovariano.</li>
+                    <li><strong>Ductos Genitais:</strong>
+                        <ul>
+                            <li><em>Masculino:</em> Células de Sertoli produzem <strong>AMH</strong> (regressão de Müller). Células de Leydig produzem <strong>Testosterona</strong> (manutenção de Wolff -> epidídimo, deferente).</li>
+                            <li><em>Feminino:</em> Ausência de AMH e Testosterona permite desenvolvimento dos ductos de Müller (útero, tubas) e regressão de Wolff.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Genitália Externa:</strong> A testosterona é convertida em <strong>DHT</strong> (pela 5-alfa-redutase) para formar pênis e escroto. Sem DHT, formam-se clitóris e lábios.</li>
+                </ul>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                <div class="card">
+                    <div class="question">Qual o papel do gene Sox9 na diferenciação?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ativado pelo SRY, o Sox9 regula a diferenciação das células precursoras em <strong>Células de Sertoli</strong> e inibe genes ovarianos (como Wnt4).</div>
+                </div>
+                <div class="card">
+                    <div class="question">O que ocorre na ausência de DHT (Di-hidrotestosterona) em um feto XY?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">O feto terá testículos internos (devido ao SRY/Testosterona), mas a <strong>genitália externa será ambígua ou feminina</strong>, pois a DHT é essencial para virilização externa.</div>
+                </div>
+                <div class="card">
+                    <div class="question">Até qual semana as gônadas são consideradas bipotentes?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Até a <strong>6ª semana</strong> de gestação.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="urinario" class="content-section">
+            <h1>Sistema Urinário</h1>
+            <div class="source-ref">Fonte: AULA 10 - Histo e embrio Urinário.pdf</div>
+
+            <div class="summary-box">
+                <h3>Conceitos Fundamentais:</h3>
+                <ul>
+                    <li><strong>Embriologia (Metanefro):</strong> O rim permanente forma-se da interação entre duas estruturas:
+                        1. <strong>Broto Uretérico</strong> (Divertículo Metanéfrico): Origina ureter, pelve, cálices e ductos coletores.
+                        2. <strong>Blastema Metanéfrico</strong> (Massa mesodérmica): Origina os néfrons (Glomérulo até TCD).</li>
+                    <li><strong>Células Mesangiais:</strong> Localizadas entre capilares glomerulares. Funções: fagocitose, suporte e <strong>contração</strong> (possuem receptores para Angiotensina II para reduzir fluxo e para ANP para relaxar/aumentar fluxo).</li>
+                    <li><strong>Túbulo Proximal (TCP):</strong> Epitélio cúbico com <strong>borda em escova</strong>. Reabsorve 65% de Na+/H2O e 100% de glicose/aminoácidos.</li>
+                    <li><strong>Aparelho Justaglomerular:</strong> Composto pela <strong>Mácula Densa</strong> (sensor de NaCl no TCD) e <strong>Células Justaglomerulares</strong> (musculares modificadas na arteríola aferente que secretam Renina).</li>
+                </ul>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                <div class="card">
+                    <div class="question">Quais estruturas derivam do Broto Uretérico?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ureter, Pelve Renal, Cálices Maiores e Menores, e <strong>Ductos Coletores</strong>. (O néfron deriva do Blastema).</div>
+                </div>
+                <div class="card">
+                    <div class="question">Como diferenciar histologicamente o Ramo Delgado da Alça de Henle dos capilares?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ambos são pavimentosos, mas o ramo delgado da Alça de Henle possui epitélio um pouco mais espesso e <strong>não contém hemácias</strong> em seu lúmen.</div>
+                </div>
+                <div class="card">
+                    <div class="question">Qual a função da Angiotensina II nas células mesangiais?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ela causa a <strong>contração</strong> das células mesangiais, reduzindo a área de superfície dos capilares e diminuindo a taxa de filtração glomerular.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="masculino" class="content-section">
+            <h1>Reprodutor Masculino</h1>
+            <div class="source-ref">Fonte: AULA 8.1 - Sistema reprodutor masculino.pdf</div>
+
+            <div class="summary-box">
+                <h3>Conceitos Fundamentais:</h3>
+                <ul>
+                    <li><strong>Espermiogênese (4 Fases):</strong> Transformação de espermátide em espermatozoide (sem divisão celular).
+                        1. Fase Golgi: Formação do grânulo acrossômico.
+                        2. Fase Capuz: Vesícula cobre o núcleo.
+                        3. Fase Acrossômica: Condensação nuclear e formação do flagelo.
+                        4. Fase Maturação: Perda do citoplasma (corpos residuais).</li>
+                    <li><strong>Epidídimo:</strong> Epitélio pseudoestratificado colunar com <strong>estereocílios</strong> (longos microvilos imóveis para absorção). Local de maturação final e armazenamento.</li>
+                    <li><strong>Células de Sertoli:</strong> Formam a barreira hematotesticular (junções oclusivas), nutrem espermatozoides e fagocitam corpos residuais.</li>
+                    <li><strong>Ducto Deferente:</strong> Caracterizado por uma <strong>espessa camada muscular</strong> (três camadas: longitudinal interna, circular média, longitudinal externa) para propulsão na ejaculação.</li>
+                </ul>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                <div class="card">
+                    <div class="question">Qual a origem da vesícula acrossômica na espermiogênese?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ela se origina do <strong>Complexo de Golgi</strong> da espermátide.</div>
+                </div>
+                <div class="card">
+                    <div class="question">O que são células mioides e onde estão?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">São células achatadas e contráteis (semelhantes a músculo liso) que envolvem a membrana basal dos <strong>túbulos seminíferos</strong>, ajudando no movimento dos espermatozoides.</div>
+                </div>
+                <div class="card">
+                    <div class="question">Qual a diferença entre Espermatogênese e Espermiogênese?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer"><strong>Espermatogênese</strong> é o processo completo (mitose + meiose). <strong>Espermiogênese</strong> é apenas a etapa final de diferenciação morfológica da espermátide em espermatozoide.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="feminino" class="content-section">
+            <h1>Reprodutor Feminino</h1>
+            <div class="source-ref">Fonte: AULA 9 - Sistema reprodutor feminino .pdf</div>
+
+            <div class="summary-box">
+                <h3>Conceitos Fundamentais:</h3>
+                <ul>
+                    <li><strong>Pausas da Meiose:</strong>
+                        1. Oócito Primário: Para na <strong>Prófase I</strong> (vida fetal até puberdade).
+                        2. Oócito Secundário: Para na <strong>Metáfase II</strong> (ovulação). Só completa se fertilizado.</li>
+                    <li><strong>Foliculogênese:</strong>
+                        * <em>Primordial:</em> Células foliculares achatadas (pavimentosas).
+                        * <em>Primário Unilaminar:</em> Células cúbicas.
+                        * <em>Primário Multilaminar:</em> Células da granulosa estratificadas. Surge a Zona Pelúcida.
+                        * <em>Secundário (Antral):</em> Acúmulo de líquido (Antro). Diferenciação das Tecas (Interna esteroidogênica e Externa fibrosa).</li>
+                    <li><strong>Atresia Folicular:</strong> Processo apoptótico regulado pela proteína <strong>NAIP</strong> (Neuronal Apoptosis Inhibitory Protein). A queda de gonadotrofinas leva à perda de NAIP e morte do folículo.</li>
+                </ul>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                <div class="card">
+                    <div class="question">O que define histologicamente um Folículo Primário Multilaminar?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">O epitélio torna-se estratificado (várias camadas de granulosa) e a <strong>Zona Pelúcida</strong> torna-se visível ao redor do oócito.</div>
+                </div>
+                <div class="card">
+                    <div class="question">Qual a função da Teca Interna nos folículos antrais?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">É uma camada vascularizada e celular que produz andrógenos (precursores de estrogênio) sob estímulo do LH. Possui receptores de LH.</div>
+                </div>
+                <div class="card">
+                    <div class="question">O que é o Corpo Albicans?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">É a cicatriz de tecido conjuntivo denso (colágeno e fibroblastos) que resta após a degeneração (luteólise) do corpo lúteo.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="adrenais" class="content-section">
+            <h1>Adrenais e Pâncreas Endócrino</h1>
+            <div class="source-ref">Fonte: AULA 7 - Adrenais - pâncreas endócrino .pdf</div>
+
+            <div class="summary-box">
+                <h3>Conceitos Fundamentais:</h3>
+                <ul>
+                    <li><strong>Adrenal (Córtex):</strong> Origem mesodérmica.
+                        * <em>Glomerulosa (13%):</em> Arcos celulares. Produz Aldosterona.
+                        * <em>Fasciculada (80%):</em> Cordões retos (espongiócitos). Produz Cortisol.
+                        * <em>Reticulada (7%):</em> Rede anastomosada. Produz Andrógenos.</li>
+                    <li><strong>Adrenal (Medula):</strong> Origem na <strong>Crista Neural</strong>. Células Cromafins (neurônios modificados sem axônio). Secretam Adrenalina e Noradrenalina (armazenadas em grânulos).</li>
+                    <li><strong>Pâncreas Endócrino (Ilhotas):</strong>
+                        * <em>Células Beta (70%):</em> Centro da ilhota. Insulina.
+                        * <em>Células Alfa (20%):</em> Periferia. Glucagon.
+                        * <em>Células Delta (5%):</em> Somatostatina.</li>
+                </ul>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                <div class="card">
+                    <div class="question">Qual a característica histológica das células da Zona Fasciculada?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">São chamadas de <strong>Espongiócitos</strong>: células poliédricas com citoplasma vacuolizado devido à grande quantidade de gotas lipídicas (colesterol) para síntese de hormônios.</div>
+                </div>
+                <div class="card">
+                    <div class="question">Como é a regulação da Zona Glomerulosa?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">É controlada principalmente pelo sistema <strong>Renina-Angiotensina-Aldosterona</strong> e pelos níveis de Potássio (K+), e não apenas pelo ACTH (como as outras zonas).</div>
+                </div>
+                <div class="card">
+                    <div class="question">Qual a origem embriológica da Medula Adrenal?</div>
+                    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver Resposta</button>
+                    <div class="answer">Ela deriva das células da <strong>Crista Neural</strong> (neuroectoderma), que migram para o interior do córtex fetal.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(sectionId).classList.add('active');
+
+            const clickedBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(sectionId));
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+                // Scroll button into view on mobile
+                if (window.innerWidth < 768) {
+                    clickedBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+        }
+
+        function toggleAnswer(btn) {
+            const answerDiv = btn.nextElementSibling;
+            if (answerDiv.style.display === "block") {
+                answerDiv.style.display = "none";
+                btn.textContent = "Ver Resposta";
+                btn.style.backgroundColor = "#3498db";
+            } else {
+                answerDiv.style.display = "block";
+                btn.textContent = "Esconder Resposta";
+                btn.style.backgroundColor = "#95a5a6";
+            }
+        }
+    </script>
+</body>
+</html>
